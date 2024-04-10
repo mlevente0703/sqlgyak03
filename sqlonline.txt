@@ -1,0 +1,34 @@
+CREATE OR ALTER VIEW VSZOBA
+AS
+SELECT sz.*,
+		szh.SZALLAS_NEV,
+        szh.HELY,
+        szh.CSILLAGOK_SZAMA
+FROM Szoba sz JOIN Szallashely szh on sz.SZALLAS_FK=szh.SZALLAS_ID
+
+
+CREATE or ALTER PROC SP
+@ugyfel nvarchar(100)
+AS
+BEGIN
+	select *
+	from Foglalas
+	where ugyfel_fk=@ugyfel
+end
+
+EXEC SP 'laszlo2'
+
+
+CREATE function UDF
+(
+  @fazon int
+)
+returns int
+as
+BEGIN
+	DECLARE @ferohely int
+    SELECT @ferohely =sz.FEROHELY
+    FROM Foglalas f JOIN Szoba sz on f.SZOBA_FK=sz.SZOBA_ID
+    WHERE f.FOGLALAS_PK=@fazon
+    return @ferohely
+end
