@@ -1,0 +1,24 @@
+CVCWQ9
+
+1. feladat
+Filter		{"countries.0": "USA", "imdb.rating": {"$gte": 5}}
+Project 	{"title": 1, "countries": 1, "imdb.rating": 1}
+Sort		{"imdb.rating": 1}
+
+2. feladat
+db.users.find({"email":{$regex:/.com/}},{"name":1,"email":1}).pretty()
+
+3. feladat
+db.movies.aggregate([{$group:{_id:"$rated",avg:{$avg:"runtime"}}},{"year":{$gt:1950}}])
+
+4. feladat
+match(p:Person)-[:ACTED_IN]->(m:Movie)
+return m.title, count(*)
+order by count(*) desc
+limit 1
+
+5. feladat
+match(p:Person)-[:ACTED_IN]->(m:Movie)
+where p.born>1980
+with p.name as `Actor`,p.born as `BirthYear`,count(*) as `NumMoviesActedIn`
+return Actor, NumMoviesActedIn
